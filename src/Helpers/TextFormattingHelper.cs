@@ -1,25 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace JonJobBot.src.Helpers
 {
     public static class TextFormattingHelper
     {
-        public static string ParseMergeFields(string text, string[] values)
+        /// <summary>
+        /// Replaces the merge fields with the values in order
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static string ParseMergeFieldsValues(string text, string[] values)
         {
             int index = 0;
-            var parsedMessage = new StringBuilder(text);
-            while (parsedMessage.ToString().IndexOf(Constants.MergeField) != -1)
+            while (text.IndexOf(Constants.MergeField) != -1)
             {
                 if (index > values.Length)
-                    return parsedMessage.ToString();
+                    return text;
 
-                parsedMessage.Replace(Constants.MergeField, values[index]);
+                var regex = new Regex(Regex.Escape(Constants.MergeField));
+                text = regex.Replace(text, values[index], 1);
                 index++;
             }
 
-            return parsedMessage.ToString();
+            return text.ToString();
         }
     }
 }

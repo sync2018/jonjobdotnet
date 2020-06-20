@@ -11,6 +11,8 @@ namespace JonJobBot.src.Features
 {
     public class Commands : ModuleBase<ShardedCommandContext>
     {
+        Random _rand = new Random();
+
         [Command(Constants.BotCommands.Greet)]
         public async Task Greet()
         {
@@ -25,11 +27,15 @@ namespace JonJobBot.src.Features
 
             var users = Context.Guild.Users
                 .Where(x => (x.Status == Discord.UserStatus.Online || x.Status == Discord.UserStatus.Idle || x.Status == Discord.UserStatus.AFK) && !x.IsBot);
-            var rand = new Random();
-            var randomIndex = rand.Next(users.Count());
-            var randomUser = users.Skip(randomIndex).First();
+
+            var insults = Constants.Insults.GetAll();
+
+            var randomUserIndex = _rand.Next(users.Count());
+            var randomInsultIndex = _rand.Next(insults.Count());
+            var randomUser = users.Skip(randomUserIndex).First();
+            var randomInsult = insults.Skip(randomInsultIndex).First();
             var response = Constants.BotResponse.Yawa;
-            await ReplyAsync(TextFormattingHelper.ParseMergeFields(response, new string[] { randomUser.Mention }));
+            await ReplyAsync(TextFormattingHelper.ParseMergeFieldsValues(response, new string[] { randomInsult, randomUser.Mention }));
         } 
     }
 }
