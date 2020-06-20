@@ -18,7 +18,7 @@ namespace JonJobBot
                 {
                     configHost.SetBasePath(Directory.GetCurrentDirectory());
                     configHost.AddJsonFile("hostsettings.json", optional: true);
-                    configHost.AddEnvironmentVariables(prefix: "BOT_");
+                    configHost.AddEnvironmentVariables(prefix: "bruh");
                     configHost.AddCommandLine(args);
                 })
                 .ConfigureAppConfiguration((hostContext, configApp) =>

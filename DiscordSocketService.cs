@@ -1,7 +1,9 @@
 ﻿using Discord;
+using Discord.Commands;
 using Discord.WebSocket;
 using JonJobBot.src;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,8 +22,11 @@ namespace JonJobBot
         private readonly ILogger<DiscordSocketService> _logger;
         private readonly IApplicationLifetime _applicationLifetime;
         private readonly IConfiguration _config;
-        private static string botToken;
+        private readonly IServiceProvider _services;
         private static DiscordShardedClient discordClient;
+        private readonly CommandService command;
+
+        private static string botToken;
 
         public DiscordSocketService(
             ILogger<DiscordSocketService> logger, 
@@ -32,6 +37,13 @@ namespace JonJobBot
             _applicationLifetime = applicationLifetime;
             _config = configuration;
             botToken = _config["BOT_TOKEN"];
+            discordClient = new DiscordShardedClient();
+            command = new CommandService();
+
+            _services = new ServiceCollection()
+                .AddSingleton(discordClient)
+                .AddSingleton(command)
+                .BuildServiceProvider();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -81,7 +93,7 @@ namespace JonJobBot
 
         private void ConfigureEventHandlers(DiscordShardedClient client)
         {
-            new CommandHandler(client, _config);
+            new CommandHandler(client, command, _services, _config);
         }
     }
 }
