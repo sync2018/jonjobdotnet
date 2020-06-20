@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 
 namespace JonJobBot
 {
+    /// <summary>
+    /// Initializes Bot client
+    /// </summary>
     public class DiscordSocketService : IHostedService
     {
         private readonly ILogger<DiscordSocketService> _logger;

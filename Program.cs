@@ -43,8 +43,6 @@ namespace JonJobBot
                 .Build();
 
             await host.RunAsync();
-
- 
         }
     }
 }

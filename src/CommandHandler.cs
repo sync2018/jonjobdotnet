@@ -29,6 +29,11 @@ namespace JonJobBot.src
             _client.MessageReceived += HandleCommandAsync;
         }
 
+        /// <summary>
+        /// Place commands here
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
         private async Task HandleCommandAsync(SocketMessage message)
         {
             var msg = message as SocketUserMessage;
