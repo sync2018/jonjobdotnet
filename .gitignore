@@ -1,3 +1,8 @@
 JonJobBot/bin/
 JonJobBot/obj/
 JonJobBot/hostsettings.json
+bin/
+obj/
+hostsettings.json
+appsettings.json
+appsettings.development.json
